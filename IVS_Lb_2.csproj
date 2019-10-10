@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="AISOptymize.cs" />
     <Compile Include="AntyBody.cs" />
-    <Compile Include="Gray.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

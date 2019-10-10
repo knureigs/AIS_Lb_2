@@ -1,5 +1,4 @@
 ﻿using System;
-using Gray;
 
 namespace AIS
 {
@@ -33,7 +32,9 @@ namespace AIS
 
         public void SetAffinity()
         {
-            result = x1 * x2 * Math.Sin(x1 * x1 + x2 * x2);
+            //result = x1 * x2 * Math.Sin(x1 * x1 + x2 * x2);
+            //result = Math.Sin(x1*x1 + x2*x2);
+            result = Math.Sin(x1);
         }
 
         internal AntyBody Clone()
@@ -41,21 +42,30 @@ namespace AIS
             return new AntyBody(this.x1, this.x2);
         }
 
-        internal void Mutate(int seed, int minProb)
+        internal void Mutate(int seed, int probability)
         {
-            string x1Gray = GrayCode.BinStringFormat(Convert.ToString(x1 ^ (x1 >> 1), 2));
-        }
+            Random rand = new Random(seed);
+            bool probmutation = rand.Next(0, 100) < probability ? true : false;
+            if (probmutation)
+            {
+                double x1n=0, x2n=0, modify=0;
+                do
+                {
+                    modify = rand.NextDouble() * (rand.Next(0, 2) == 0 ? -1 : 1);
+                    x1n = x1 + modify;
+                }
+                while (x1n > 1 || x1n < -1);
+                x1 += modify;
 
-        //internal void Mutate(int seed, int minProb)
-        //{
-        //    Random rand = new Random();
-        //    bool probmutation = rand.Next(0, 100) > minProb ? true : false;
-        //    if (probmutation)
-        //    {
-        //        x1 += rand.NextDouble();
-        //        x2 += rand.NextDouble();
-        //    }
-        //}
+                do
+                {
+                    modify = rand.NextDouble() * (rand.Next(0, 2) == 0 ? -1 : 1);
+                    x2n = x2 + modify;
+                }
+                while (x2n > 1 || x2n < -1);
+                x2 += modify;
+            }
+        }
 
         public override string ToString()
         {
